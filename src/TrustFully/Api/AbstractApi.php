@@ -15,11 +15,36 @@ abstract class AbstractApi
     protected $client;
 
     /**
+     * @var string
+     */
+    protected $endPoint;
+
+    /**
      * @param Client $client
      */
     public function __construct(Client $client)
     {
         $this->client = $client;
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return array
+     */
+    public function all(array $params = array())
+    {
+        return $this->client->get(sprintf('/%s', $this->endPoint), $params);
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return array
+     */
+    public function get($id)
+    {
+        return $this->client->get(sprintf('/%s/%s', $this->endPoint, $id));
     }
 
     /**
