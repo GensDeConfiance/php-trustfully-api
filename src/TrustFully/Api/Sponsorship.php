@@ -7,19 +7,21 @@ class Sponsorship extends AbstractApi
     protected $endPoint = 'sponsorships';
 
     /**
-     * @param string $userToId
+     * @param string $userTo
      * @param string $communityId
      * @param string $relationDesc
      * @param string $relationType
      * @param string $origin
+     * @param string $userFrom
      *
      * @return array
      */
-    public function create($userToId, $communityId, $relationDesc, $relationType, $origin)
+    public function create($userTo, $communityId, $relationDesc, $relationType, $origin, $userFrom = 'me')
     {
         $params = array(
-            'community' => sprintf('/api/communities/%s', $userToId),
-            'userTo' => sprintf('/api/users/%s', $communityId),
+            'userFrom' => !is_array($userFrom) ? sprintf('/api/users/%s', $userFrom) : $userFrom,
+            'userTo' => !is_array($userTo) ? sprintf('/api/users/%s', $userTo) : $userTo,
+            'community' => sprintf('/api/communities/%s', $communityId),
             'relationDesc' => $relationDesc,
             'relationType' => $relationType,
             'origin' => $origin,
