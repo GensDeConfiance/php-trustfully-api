@@ -28,4 +28,17 @@ class Sponsorship extends AbstractApi
 
         return $this->client->decode($json);
     }
+
+    public function update($id, $params)
+    {
+        $defaults = array(
+            'relationDesc' => null,
+            'relationType' => null,
+            'origin' => null,
+        );
+        $params = $this->sanitizeParams($defaults, $params);
+        $json = $this->client->put(sprintf('/%s/%s', $this->endPoint, $id), $params);
+
+        return $this->client->decode($json);
+    }
 }

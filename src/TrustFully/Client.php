@@ -177,12 +177,15 @@ class Client implements ClientInterface
      *
      * @param string $path
      * @param mixed  $data
+     * @param bool   $encode
      *
      * @return array
      */
-    public function put($path, $data = null)
+    public function put($path, $data = null, $encode = true)
     {
-        $data = $this->encodeData($data);
+        if ($encode) {
+            $data = $this->encodeData($data);
+        }
 
         return $this->runRequest($path, 'PUT', $data);
     }
@@ -373,7 +376,7 @@ class Client implements ClientInterface
             case 'PUT':
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
                 if (isset($data)) {
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
                 }
                 break;
             case 'DELETE':
