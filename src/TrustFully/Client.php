@@ -163,7 +163,7 @@ class Client implements ClientInterface
      *
      * @return mixed
      */
-    public function post($path, $data = null, $encode = false)
+    public function post($path, $data = null, $encode = true)
     {
         if ($encode) {
             $data = $this->encodeData($data);
