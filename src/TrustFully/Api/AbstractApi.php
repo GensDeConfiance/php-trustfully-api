@@ -3,14 +3,15 @@
 namespace TrustFully\Api;
 
 use TrustFully\Client;
+use TrustFully\ClientInterface;
 
 /**
  * Abstract class for Api classes.
  */
-abstract class AbstractApi
+abstract class AbstractApi implements ApiInterface
 {
     /**
-     * @var Client
+     * @var ClientInterface
      */
     protected $client;
 
@@ -20,9 +21,9 @@ abstract class AbstractApi
     protected $endPoint;
 
     /**
-     * @param Client $client
+     * @param ClientInterface $client
      */
-    public function __construct(Client $client)
+    public function __construct(ClientInterface $client)
     {
         $this->client = $client;
     }
@@ -32,7 +33,7 @@ abstract class AbstractApi
      *
      * @return array
      */
-    public function all(array $params = array())
+    public function all(array $params = [])
     {
         return $this->client->get(sprintf('/%s', $this->endPoint), $params);
     }
@@ -73,7 +74,7 @@ abstract class AbstractApi
     {
         return array_filter(
             array_merge($defaults, $params),
-            array($this, 'isNotNull')
+            [$this, 'isNotNull']
         );
     }
 }

@@ -1,0 +1,7 @@
+suites:
+    api_client:
+        namespace: TrustFully
+        spec_prefix: Spec
+        psr4_prefix:
+        src_path: %paths.config%/src/
+        spec_path: %paths.config%/test/

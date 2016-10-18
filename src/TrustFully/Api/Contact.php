@@ -11,14 +11,14 @@ class Contact extends AbstractApi
      *
      * @return array
      */
-    public function create(array $params = array())
+    public function create(array $params = [])
     {
-        $defaults = array(
+        $defaults = [
             'email' => null,
             'firstname' => null,
             'lastname' => null,
             'fullname' => null,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $params);
         $json = $this->client->post(sprintf('/%s', $this->endPoint), $params);
 
@@ -31,14 +31,14 @@ class Contact extends AbstractApi
      *
      * @return array
      */
-    public function update($id, array $params = array())
+    public function update($id, array $params = [])
     {
-        $defaults = array(
+        $defaults = [
             'email' => null,
             'firstname' => null,
             'lastname' => null,
             'fullname' => null,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $params);
         $json = $this->client->put(sprintf('/%s/%s', $this->endPoint, $id), $params);
 

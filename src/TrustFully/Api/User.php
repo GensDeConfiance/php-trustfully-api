@@ -13,9 +13,9 @@ class User extends AbstractApi
      *
      * @return array
      */
-    public function create($email, $plainPassword, array $extraData = array())
+    public function create($email, $plainPassword, array $extraData = [])
     {
-        $defaults = array(
+        $defaults = [
             'email' => $email,
             'plainPassword' => $plainPassword,
             'gender' => null,
@@ -25,7 +25,7 @@ class User extends AbstractApi
             'city' => null,
             'state' => null,
             'countryCode' => null,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $extraData);
         $json = $this->client->post(sprintf('/%s', $this->endPoint), $params);
 
@@ -38,9 +38,9 @@ class User extends AbstractApi
      *
      * @return array
      */
-    public function update($id, array $params = array())
+    public function update($id, array $params = [])
     {
-        $defaults = array(
+        $defaults = [
             'email' => null,
             'plainPassword' => null,
             'gender' => null,
@@ -50,7 +50,7 @@ class User extends AbstractApi
             'city' => null,
             'state' => null,
             'countryCode' => null,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $params);
         $json = $this->client->put(sprintf('/%s/%s', $this->endPoint, $id), $params);
 

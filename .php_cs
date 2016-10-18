@@ -11,15 +11,15 @@ $finder = (new \Symfony\Component\Finder\Finder())
 return Symfony\CS\Config\Config::create()
     ->setUsingCache(true)
     ->level(Symfony\CS\FixerInterface::SYMFONY_LEVEL)
-    ->fixers(array(
+    ->fixers([
         '-phpdoc_short_description',
         '-psr0',
         'header_comment',
-        'long_array_syntax',
+        'short_array_syntax',
         'newline_after_open_tag',
         'no_useless_return',
         'ordered_use',
         'phpdoc_order',
-    ))
+    ])
     ->finder($finder)
 ;

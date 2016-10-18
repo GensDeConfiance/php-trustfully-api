@@ -5,13 +5,39 @@ namespace TrustFully;
 interface ClientInterface
 {
     /**
-     * @param string $name
+     * @param string $path
+     * @param array  $params
+     * @param bool   $decode
      *
-     * @throws \InvalidArgumentException
-     *
-     * @return Api\AbstractApi
+     * @return array
      */
-    public function api($name);
+    public function get($path, array $params = [], $decode = true);
+
+     /**
+      * @param string $path
+      * @param mixed  $data
+      * @param bool   $encode
+      *
+      * @return mixed
+      */
+     public function post($path, $data = null, $encode = true);
+
+     /**
+      * @param string $path
+      * @param mixed  $data
+      * @param bool   $encode
+      *
+      * @return array
+      */
+     public function put($path, $data = null, $encode = true);
+
+    /**
+     * @param string $path
+     * @param mixed  $data
+     *
+     * @return array
+     */
+    public function delete($path, $data = null);
 
     /**
      * Decodes json response.
@@ -24,34 +50,4 @@ interface ClientInterface
      * @return array|string
      */
     public function decode($json);
-
-    /**
-     * HTTP POSTs $data to $path.
-     *
-     * @param string $path
-     * @param mixed  $data
-     *
-     * @return mixed
-     */
-    public function post($path, $data = null);
-
-    /**
-     * HTTP PUTs $data to $path.
-     *
-     * @param string $path
-     * @param mixed  $data
-     *
-     * @return array
-     */
-    public function put($path, $data = null);
-
-    /**
-     * HTTP DELETEs $data to $path.
-     *
-     * @param string $path
-     * @param mixed  $data
-     *
-     * @return array
-     */
-    public function delete($path, $data = null);
 }

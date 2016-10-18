@@ -7,10 +7,34 @@ class Client implements ClientInterface
     /**
      * @var array
      */
-    private static $defaultPorts = array(
+    private $classMapping = [
+        'community' => 'Community',
+        'contact' => 'Contact',
+        'login' => 'Login',
+        'membership' => 'Membership',
+        'sponsorship' => 'Sponsorship',
+        'user' => 'User',
+    ];
+
+    /**
+     * @var array
+     */
+    private static $defaultPorts = [
         'http' => 80,
         'https' => 443,
-    );
+    ];
+
+    /**
+     * Error strings if json is invalid.
+     *
+     * @var array
+     */
+    private static $jsonErrors = [
+        JSON_ERROR_NONE => 'No error has occurred',
+        JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
+        JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
+        JSON_ERROR_SYNTAX => 'Syntax error',
+    ];
 
     /**
      * @var int
@@ -38,33 +62,14 @@ class Client implements ClientInterface
     private $checkSslHost = false;
 
     /**
-     * @var array APIs
+     * @var array
      */
-    private $apis = array();
+    private $apis = [];
 
     /**
-     * @var int|null response code, null if request is not still completed
+     * @var int|null
      */
     private $responseCode = null;
-
-    /**
-     * Error strings if json is invalid.
-     */
-    private static $jsonErrors = array(
-        JSON_ERROR_NONE => 'No error has occurred',
-        JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
-        JSON_ERROR_CTRL_CHAR => 'Control character error, possibly incorrectly encoded',
-        JSON_ERROR_SYNTAX => 'Syntax error',
-    );
-
-    private $classes = array(
-        'community' => 'Community',
-        'contact' => 'Contact',
-        'login' => 'Login',
-        'membership' => 'Membership',
-        'sponsorship' => 'Sponsorship',
-        'user' => 'User',
-    );
 
     /**
      * @param string $url
@@ -84,7 +89,7 @@ class Client implements ClientInterface
      *
      * @return Api\AbstractApi
      */
-    public function api($name)
+    public function __get($name)
     {
         if (!isset($this->classes[$name])) {
             throw new \InvalidArgumentException('Available api : '.implode(', ', array_keys($this->classes)));
@@ -96,18 +101,6 @@ class Client implements ClientInterface
         $this->apis[$name] = new $c($this);
 
         return $this->apis[$name];
-    }
-
-    /**
-     * @param string $name
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return Api\AbstractApi
-     */
-    public function __get($name)
-    {
-        return $this->api($name);
     }
 
     /**
@@ -131,15 +124,9 @@ class Client implements ClientInterface
     }
 
     /**
-     * HTTP GETs a json $path and tries to decode it.
-     *
-     * @param string $path
-     * @param array  $params
-     * @param bool   $decode
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function get($path, array $params = array(), $decode = true)
+    public function get($path, array $params = [], $decode = true)
     {
         if (count($params) > 0) {
             $path = sprintf('%s?%s', $path, http_build_query($params));
@@ -156,13 +143,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * HTTP POSTs $params to $path.
-     *
-     * @param string $path
-     * @param mixed  $data
-     * @param bool   $encode
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function post($path, $data = null, $encode = true)
     {
@@ -174,13 +155,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * HTTP PUTs $params to $path.
-     *
-     * @param string $path
-     * @param mixed  $data
-     * @param bool   $encode
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function put($path, $data = null, $encode = true)
     {
@@ -192,12 +167,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * HTTP PUTs $params to $path.
-     *
-     * @param string $path
-     * @param mixed  $data
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function delete($path, $data = null)
     {
@@ -210,14 +180,7 @@ class Client implements ClientInterface
     }
 
     /**
-     * Decodes json response.
-     *
-     * Returns $json if no error occured during decoding but decoded value is
-     * null.
-     *
-     * @param string $json
-     *
-     * @return array|string
+     * {@inheritdoc}
      */
     public function decode($json)
     {
@@ -356,13 +319,13 @@ class Client implements ClientInterface
             curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, $this->checkSslHost);
         }
 
-        $requestHeader = array(
+        $requestHeader = [
             'content-type: multipart/form-data',
             'cache-control: no-cache',
             // 'Expect:',
             sprintf('X-Api-Key: %s', $this->xApiKey),
             // 'Content-Type: application/json',
-        );
+        ];
         if (null !== $this->apiToken) {
             $requestHeader[] = sprintf('Authorization: Bearer %s', $this->apiToken);
         }
@@ -436,7 +399,7 @@ class Client implements ClientInterface
             return json_encode($data);
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -450,7 +413,7 @@ class Client implements ClientInterface
         $header = substr($rawResponse, 0, $headerSize);
         $body = substr($rawResponse, $headerSize);
 
-        $headers = array();
+        $headers = [];
         $rawHeader = substr($rawResponse, 0, strpos($rawResponse, "\r\n\r\n"));
         foreach (explode("\r\n", $rawHeader) as $i => $line) {
             if (0 === $i) {
@@ -461,9 +424,9 @@ class Client implements ClientInterface
             }
         }
 
-        return array(
+        return [
             'headers' => $headers,
             'body' => $body,
-        );
+        ];
     }
 }

@@ -12,10 +12,10 @@ class Login extends AbstractApi
      */
     public function getToken($username, $password)
     {
-        $params = array(
+        $params = [
             '_username' => $username,
             '_password' => $password,
-        );
+        ];
 
         return $this->client->post('/login_check', $params, $encode = false);
     }

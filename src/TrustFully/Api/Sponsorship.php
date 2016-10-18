@@ -18,14 +18,14 @@ class Sponsorship extends AbstractApi
      */
     public function create($userTo, $communityId, $relationDesc, $relationType, $origin, $userFrom = 'me')
     {
-        $params = array(
+        $params = [
             'userFrom' => !is_array($userFrom) ? sprintf('/api/users/%s', $userFrom) : $userFrom,
             'userTo' => !is_array($userTo) ? sprintf('/api/users/%s', $userTo) : $userTo,
             'community' => sprintf('/api/communities/%s', $communityId),
             'relationDesc' => $relationDesc,
             'relationType' => $relationType,
             'origin' => $origin,
-        );
+        ];
         $json = $this->client->post(sprintf('/%s', $this->endPoint), $params);
 
         return $this->client->decode($json);
@@ -33,11 +33,11 @@ class Sponsorship extends AbstractApi
 
     public function update($id, $params)
     {
-        $defaults = array(
+        $defaults = [
             'relationDesc' => null,
             'relationType' => null,
             'origin' => null,
-        );
+        ];
         $params = $this->sanitizeParams($defaults, $params);
         $json = $this->client->put(sprintf('/%s/%s', $this->endPoint, $id), $params);
 

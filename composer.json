@@ -13,11 +13,20 @@
         "ext-curl": "*"
     },
     "require-dev": {
-        "symfony/var-dumper": "^3.1"
+        "symfony/var-dumper": "^3.1",
+        "phpspec/phpspec": "^3.1"
     },
     "autoload": {
-        "psr-0": {
-            "TrustFully": "src/"
+        "psr-4": {
+            "": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "test/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin"
     }
 }
