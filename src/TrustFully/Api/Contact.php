@@ -2,14 +2,12 @@
 
 namespace TrustFully\Api;
 
-class Contact extends AbstractApi
+class Contact extends AbstractApi implements ContactInterface
 {
     protected $endPoint = 'contacts';
 
     /**
-     * @param array $params
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function create(array $params = [])
     {
@@ -26,10 +24,7 @@ class Contact extends AbstractApi
     }
 
     /**
-     * @param string $id
-     * @param array  $params
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function update($id, array $params = [])
     {

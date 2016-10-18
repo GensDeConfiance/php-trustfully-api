@@ -10,7 +10,6 @@ class Client implements ClientInterface
     private $classMapping = [
         'community' => 'Community',
         'contact' => 'Contact',
-        'login' => 'Login',
         'membership' => 'Membership',
         'sponsorship' => 'Sponsorship',
         'user' => 'User',
@@ -91,13 +90,13 @@ class Client implements ClientInterface
      */
     public function __get($name)
     {
-        if (!isset($this->classes[$name])) {
-            throw new \InvalidArgumentException('Available api : '.implode(', ', array_keys($this->classes)));
+        if (!isset($this->classMapping[$name])) {
+            throw new \InvalidArgumentException('Available api : '.implode(', ', array_keys($this->classMapping)));
         }
         if (isset($this->apis[$name])) {
             return $this->apis[$name];
         }
-        $c = 'TrustFully\Api\\'.$this->classes[$name];
+        $c = 'TrustFully\Api\\'.$this->classMapping[$name];
         $this->apis[$name] = new $c($this);
 
         return $this->apis[$name];

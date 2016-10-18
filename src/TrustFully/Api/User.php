@@ -2,16 +2,28 @@
 
 namespace TrustFully\Api;
 
-class User extends AbstractApi
+class User extends AbstractApi implements UserInterface
 {
     protected $endPoint = 'users';
 
     /**
-     * @param string $email
-     * @param string $plainPassword
-     * @param array  $extraData
-     *
-     * @return array
+     * {@inheritdoc}
+     */
+    public function login($username, $password)
+    {
+        $params = [
+            '_username' => $username,
+            '_password' => $password,
+        ];
+        $response = $this->client->post('/login_check', $params, $encode = false);
+        $me = $this->client->decode($response);
+        $this->client->setApiToken($me['token']);
+
+        return $me;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function create($email, $plainPassword, array $extraData = [])
     {
@@ -33,10 +45,7 @@ class User extends AbstractApi
     }
 
     /**
-     * @param string $id
-     * @param array  $params
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function update($id, array $params = [])
     {

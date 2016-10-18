@@ -2,19 +2,12 @@
 
 namespace TrustFully\Api;
 
-class Sponsorship extends AbstractApi
+class Sponsorship extends AbstractApi implements SponsorshipInterface
 {
     protected $endPoint = 'sponsorships';
 
     /**
-     * @param string $userTo
-     * @param string $communityId
-     * @param string $relationDesc
-     * @param string $relationType
-     * @param string $origin
-     * @param string $userFrom
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function create($userTo, $communityId, $relationDesc, $relationType, $origin, $userFrom = 'me')
     {
@@ -31,16 +24,19 @@ class Sponsorship extends AbstractApi
         return $this->client->decode($json);
     }
 
-    public function update($id, $params)
-    {
-        $defaults = [
+     /**
+      * {@inheritdoc}
+      */
+     public function update($id, array $params = [])
+     {
+         $defaults = [
             'relationDesc' => null,
             'relationType' => null,
             'origin' => null,
         ];
-        $params = $this->sanitizeParams($defaults, $params);
-        $json = $this->client->put(sprintf('/%s/%s', $this->endPoint, $id), $params);
+         $params = $this->sanitizeParams($defaults, $params);
+         $json = $this->client->put(sprintf('/%s/%s', $this->endPoint, $id), $params);
 
-        return $this->client->decode($json);
-    }
+         return $this->client->decode($json);
+     }
 }
