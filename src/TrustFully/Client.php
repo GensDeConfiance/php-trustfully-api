@@ -58,11 +58,12 @@ class Client implements ClientInterface
     );
 
     private $classes = array(
-        'login' => 'Login',
         'community' => 'Community',
-        'user' => 'User',
+        'contact' => 'Contact',
+        'login' => 'Login',
         'membership' => 'Membership',
         'sponsorship' => 'Sponsorship',
+        'user' => 'User',
     );
 
     /**
