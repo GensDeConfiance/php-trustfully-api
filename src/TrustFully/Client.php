@@ -2,6 +2,15 @@
 
 namespace TrustFully;
 
+/**
+ * Simple PHP Redmine client.
+ *
+ * @property TrustFully\Api\Community $community
+ * @property TrustFully\Api\Contact $contact
+ * @property TrustFully\Api\Membership $membership
+ * @property TrustFully\Api\Sponsorship $sponsorship
+ * @property TrustFully\Api\User $user
+ */
 class Client implements ClientInterface
 {
     /**

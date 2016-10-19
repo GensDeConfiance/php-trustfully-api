@@ -35,10 +35,8 @@ require_once 'vendor/autoload.php';
 try {
     $client = new TrustFully\Client('https://api.trustfully.com/v1/', 'CLIENT_API_KEY');
 
-    $me = json_decode($client->login->getToken('guillaume@gensdeconfiance.fr', 'azerty'));
-    $client->setApiToken($me->token);
+    $me = $client->user->login('guillaume@gensdeconfiance.fr', 'azerty');
 
-    $client->setApiToken($sessionToken);
     // ...
     $communities = $client->community->all();
     // ...
