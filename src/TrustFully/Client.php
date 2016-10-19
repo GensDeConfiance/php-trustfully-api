@@ -352,11 +352,11 @@ class Client implements ClientInterface
             curl_close($curl);
             throw $e;
         }
-
         $responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
         $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
         $response = $this->parseResponse($rawResponse, $headerSize);
-        if ($this->isErrorCode($responseCode)) {
+
+        if (!$this->isSuccessCode($responseCode)) {
             $e = new \Exception($response['body']);
             curl_close($curl);
             throw $e;
@@ -375,9 +375,9 @@ class Client implements ClientInterface
      *
      * @return bool
      */
-    private function isErrorCode($code)
+    private function isSuccessCode($code)
     {
-        return 400 <= (int) $code && (int) $code <= 599;
+        return 200 <= (int) $code && (int) $code <= 299;
     }
 
     /**
