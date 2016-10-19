@@ -1,0 +1,32 @@
+{
+    "name": "gens-de-confiance/php-trustfully-api",
+    "type": "library",
+    "description": "Trustfully API client",
+    "keywords": ["trustfully", "api"],
+    "license": "MIT",
+    "authors": [{
+        "name": "Gens de Confiance",
+        "homepage": "https://github.com/GensDeConfiance"
+    }],
+    "require": {
+        "php": ">=5.4",
+        "ext-curl": "*"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^3.1",
+        "phpspec/phpspec": "^3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "test/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin"
+    }
+}
