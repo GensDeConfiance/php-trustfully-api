@@ -9,8 +9,9 @@ See TrustFully API's documentation.
 * Follows PSR-0 conventions and coding standard: autoload friendly
 * API entry points implementation state :
  * Community
- * Sponsorship
+ * Contact
  * Membership
+ * Sponsorship
  * User
 
 ## Requirements

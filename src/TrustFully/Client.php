@@ -103,26 +103,6 @@ class Client implements ClientInterface
     }
 
     /**
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
-    /**
-     * @param string $url
-     *
-     * @return Client
-     */
-    public function setUrl($url)
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function get($path, array $params = [], $decode = true)
@@ -198,34 +178,6 @@ class Client implements ClientInterface
     }
 
     /**
-     * Turns on/off ssl certificate check.
-     *
-     * @param bool $check
-     *
-     * @return Client
-     */
-    public function setCheckSslCertificate($check = false)
-    {
-        $this->checkSslCertificate = $check;
-
-        return $this;
-    }
-
-    /**
-     * Turns on/off ssl host certificate check.
-     *
-     * @param bool $check
-     *
-     * @return Client
-     */
-    public function setCheckSslHost($check = false)
-    {
-        $this->checkSslHost = $check;
-
-        return $this;
-    }
-
-    /**
      * Set the port of the connection.
      *
      * @param int $port
@@ -254,7 +206,7 @@ class Client implements ClientInterface
             return $this->port;
         }
 
-        $tmp = parse_url($this->getUrl());
+        $tmp = parse_url($this->url);
         if (isset($tmp['port'])) {
             $this->setPort($tmp['port']);
         } elseif (isset($tmp['scheme'])) {
@@ -265,13 +217,15 @@ class Client implements ClientInterface
     }
 
     /**
-     * Returns response code.
+     * @param string $url
      *
-     * @return int
+     * @return Client
      */
-    public function getResponseCode()
+    public function setUrl($url)
     {
-        return (int) $this->responseCode;
+        $this->url = $url;
+
+        return $this;
     }
 
     /**
@@ -287,11 +241,41 @@ class Client implements ClientInterface
     }
 
     /**
-     * @return string
+     * Turns on/off ssl certificate check.
+     *
+     * @param bool $check
+     *
+     * @return Client
      */
-    public function getApiToken()
+    public function setCheckSslCertificate($check = false)
     {
-        return $this->apiToken;
+        $this->checkSslCertificate = $check;
+
+        return $this;
+    }
+
+    /**
+     * Turns on/off ssl host certificate check.
+     *
+     * @param bool $check
+     *
+     * @return Client
+     */
+    public function setCheckSslHost($check = false)
+    {
+        $this->checkSslHost = $check;
+
+        return $this;
+    }
+
+    /**
+     * Returns response code.
+     *
+     * @return int
+     */
+    public function getResponseCode()
+    {
+        return (int) $this->responseCode;
     }
 
     /**
