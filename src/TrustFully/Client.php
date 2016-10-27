@@ -80,13 +80,20 @@ class Client implements ClientInterface
     private $responseCode = null;
 
     /**
+     * @var string
+     */
+    private $host;
+
+    /**
      * @param string $url
      * @param string $xApiKey
+     * @param string $host
      */
-    public function __construct($url, $xApiKey)
+    public function __construct($url, $xApiKey, $host = null)
     {
         $this->url = $url;
         $this->xApiKey = $xApiKey;
+        $this->host = $host;
         $this->getPort();
     }
 
@@ -314,10 +321,11 @@ class Client implements ClientInterface
         $requestHeader = [
             'content-type: multipart/form-data',
             'cache-control: no-cache',
-            // 'Expect:',
             sprintf('X-Api-Key: %s', $this->xApiKey),
-            // 'Content-Type: application/json',
         ];
+        if(null !== $this->host) {
+            $requestHeader[] = sprintf('Host: %s', $this->host);
+        }
         if (null !== $this->apiToken) {
             $requestHeader[] = sprintf('Authorization: Bearer %s', $this->apiToken);
         }
