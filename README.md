@@ -27,6 +27,8 @@ See TrustFully API's documentation.
 $ composer require trustfully/trustfully-api-client-php
 ```
 
+## Usage
+
 ```php
 <?php
 
@@ -43,4 +45,13 @@ try {
 } catch (\Exception $e) {
     die($e->getMessage());
 }
+```
+
+Alternatively, you can specify a host to bypass DNS resolution when instanciating the client:
+
+```php
+<?php
+
+    $client = new TrustFully\Client('https://10.17.10.17/v1/', 'CLIENT_API_KEY', 'api.trustfully.com');
+
 ```
