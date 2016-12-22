@@ -24,7 +24,7 @@ See TrustFully API's documentation.
 ## Install
 
 ```bash
-$ composer require trustfully/trustfully-api-client-php
+$ composer require gens-de-confiance/php-trustfully-api
 ```
 
 ## Usage
