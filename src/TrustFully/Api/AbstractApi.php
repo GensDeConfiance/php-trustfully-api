@@ -10,13 +10,13 @@ use TrustFully\ClientInterface;
  */
 abstract class AbstractApi implements ApiInterface
 {
-    const HYDRA_MEMBER_KEY = 'hydra:member';
+    const HYDRA_MEMBER = 'hydra:member';
 
-    const HYDRA_TYPE_KEY = '@type';
+    const HYDRA_TYPE = '@type';
 
-    const HYDRA_TYPE_ID = '@id';
+    const HYDRA_ID = '@id';
 
-    const HYDRA_TYPE_COLLECTION = 'hydra:Collection';
+    const HYDRA_COLLECTION = 'hydra:Collection';
 
     /**
      * @var ClientInterface
@@ -50,10 +50,10 @@ abstract class AbstractApi implements ApiInterface
     public function all(array $params = [])
     {
         $data = $this->client->get(sprintf('/%s', $this->endPoint), $params);
-        if (is_array($data) && isset($data[self::HYDRA_MEMBER_KEY]) && $data[self::HYDRA_TYPE_KEY] == self::HYDRA_TYPE_COLLECTION) {
+        if (is_array($data) && isset($data[self::HYDRA_MEMBER]) && $data[self::HYDRA_TYPE] === self::HYDRA_COLLECTION) {
             $results = [];
 
-            foreach ($data[self::HYDRA_MEMBER_KEY] as $item) {
+            foreach ($data[self::HYDRA_MEMBER] as $item) {
                 $class = get_class($this);
                 $results[] = new $class($this->client, $item);
             }
@@ -83,11 +83,11 @@ abstract class AbstractApi implements ApiInterface
      */
     public function __call($method, $args)
     {
-        if (true == preg_match('%get(.*)%', $method, $matches)) {
+        if (true === preg_match('%get(.*)%', $method, $matches)) {
             $property = lcfirst($matches[1]);
             $value = isset($this->properties[$property]) ? $this->properties[$property] : null;
 
-            if (preg_match('%(.*)At%', $property)) {
+            if (true === preg_match('%(.*)At%', $property)) {
                 $value = new \DateTime($value);
             }
 
@@ -114,11 +114,11 @@ abstract class AbstractApi implements ApiInterface
      */
     public function getId()
     {
-        if (0 === count($this->properties) || !isset($this->properties[self::HYDRA_TYPE_ID])) {
+        if (0 === count($this->properties) || !isset($this->properties[self::HYDRA_ID])) {
             return null;
         }
 
-        preg_match('%(.*)/([0-9]+)%', $this->properties[self::HYDRA_TYPE_ID], $matches);
+        preg_match('%(.*)/([0-9]+)%', $this->properties[self::HYDRA_ID], $matches);
 
         return (int) end($matches);
     }
