@@ -19,7 +19,7 @@ class User extends AbstractApi implements UserInterface
         $me = $this->client->decode($response);
         $this->client->setApiToken($me['token']);
 
-        return $me;
+        return new self($this->client, $me);
     }
 
     /**
