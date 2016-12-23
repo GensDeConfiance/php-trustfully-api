@@ -123,6 +123,11 @@ abstract class AbstractApi implements ApiInterface
         return (int) end($matches);
     }
 
+    public function flush()
+    {
+        return $this->update($this->getId(), $this->properties);
+    }
+
     /**
      * Checks if the variable passed is not null.
      *
