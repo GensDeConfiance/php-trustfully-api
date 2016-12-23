@@ -319,16 +319,18 @@ class Client implements ClientInterface
         }
 
         $requestHeader = [
-            'content-type: multipart/form-data',
+            'content-type: application/ld+json',
             'cache-control: no-cache',
             sprintf('X-Api-Key: %s', $this->xApiKey),
         ];
-        if(null !== $this->host) {
+        if (null !== $this->host) {
             $requestHeader[] = sprintf('Host: %s', $this->host);
         }
         if (null !== $this->apiToken) {
             $requestHeader[] = sprintf('Authorization: Bearer %s', $this->apiToken);
         }
+        $data = $this->encodeData($data);
+
         curl_setopt($curl, CURLOPT_HTTPHEADER, $requestHeader);
         switch ($method) {
             case 'POST':
