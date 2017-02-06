@@ -1,6 +1,6 @@
 <?php
 
-namespace TrustFully\Api;
+namespace TrustFully\Exception;
 
 class ClientException extends \Exception
 {
