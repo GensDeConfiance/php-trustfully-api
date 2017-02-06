@@ -21,7 +21,7 @@ class Sponsorship extends AbstractApi implements SponsorshipInterface
         ];
         $json = $this->client->post(sprintf('/%s', $this->endPoint), $params);
 
-        return $this->client->decode($json);
+        return $this->generateClass($json);
     }
 
      /**
@@ -37,6 +37,8 @@ class Sponsorship extends AbstractApi implements SponsorshipInterface
          $params = $this->sanitizeParams($defaults, $params);
          $json = $this->client->put(sprintf('/%s/%s', $this->endPoint, $id), $params);
 
-         return $this->client->decode($json);
+        return $this->generateClass($json);
      }
+
+
 }

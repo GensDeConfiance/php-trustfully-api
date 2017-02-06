@@ -2,6 +2,9 @@
 
 namespace TrustFully;
 
+use TrustFully\Exception\CurlException;
+use TrustFully\Exception\ClientException;
+
 /**
  * Simple PHP Redmine client.
  *
@@ -369,7 +372,7 @@ class Client implements ClientInterface
         $rawResponse = trim(curl_exec($curl));
 
         if (curl_errno($curl)) {
-            $e = new \Exception(curl_error($curl), curl_errno($curl));
+            $e = new CurlException(curl_error($curl), curl_errno($curl));
             curl_close($curl);
             throw $e;
         }
@@ -378,7 +381,7 @@ class Client implements ClientInterface
         $response = $this->parseResponse($rawResponse, $headerSize);
 
         if (!$this->isSuccessCode($responseCode)) {
-            $e = new \Exception($response['body']);
+            $e = new ClientException($response['body']);
             curl_close($curl);
             throw $e;
         }

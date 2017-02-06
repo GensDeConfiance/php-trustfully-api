@@ -157,4 +157,16 @@ abstract class AbstractApi implements ApiInterface
             [$this, 'isNotNull']
         );
     }
+
+    /**
+     * @param  string $json
+     * 
+     * @return AbstractApi
+     */
+    protected function generateClass($json)
+    {
+        $class = get_class($this);
+
+        return new $class($this->client, $this->client->decode($json));
+    }
 }
