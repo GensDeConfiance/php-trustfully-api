@@ -41,7 +41,7 @@ class User extends AbstractApi implements UserInterface
         $params = $this->sanitizeParams($defaults, $extraData);
         $json = $this->client->post(sprintf('/%s', $this->endPoint), $params);
 
-        return $this->client->decode($json);
+        return $this->generateClass($json);
     }
 
     /**
@@ -63,6 +63,6 @@ class User extends AbstractApi implements UserInterface
         $params = $this->sanitizeParams($defaults, $params);
         $json = $this->client->put(sprintf('/%s/%s', $this->endPoint, $id), $params);
 
-        return $this->client->decode($json);
+        return $this->generateClass($json);
     }
 }
