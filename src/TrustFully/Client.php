@@ -319,7 +319,7 @@ class Client implements ClientInterface
         }
 
         $requestHeader = [
-            'content-type: application/ld+json',
+            'Content-Type: application/json',
             'cache-control: no-cache',
             sprintf('X-Api-Key: %s', $this->xApiKey),
         ];
@@ -329,18 +329,18 @@ class Client implements ClientInterface
         if (null !== $this->apiToken) {
             $requestHeader[] = sprintf('Authorization: Bearer %s', $this->apiToken);
         }
-        $data = $this->encodeData($data);
 
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $requestHeader);
         switch ($method) {
             case 'POST':
-                curl_setopt($curl, CURLOPT_POST, true);
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+                $requestHeader[] = sprintf('content-length: %d', strlen($data));
                 if (isset($data)) {
                     curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
                 }
                 break;
             case 'PUT':
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+                $requestHeader[] = sprintf('content-length: %d', strlen($data));
                 if (isset($data)) {
                     curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
                 }
@@ -355,6 +355,7 @@ class Client implements ClientInterface
             default: // GET
                 break;
         }
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $requestHeader);
         $rawResponse = trim(curl_exec($curl));
 
         if (curl_errno($curl)) {
@@ -397,11 +398,7 @@ class Client implements ClientInterface
      */
     private function encodeData($data = null)
     {
-        if (is_array($data)) {
-            return json_encode($data);
-        }
-
-        return [];
+        return json_encode($data);
     }
 
     /**
