@@ -13,6 +13,16 @@ namespace TrustFully;
  */
 class Client implements ClientInterface
 {
+    const METHOD_POST = 'POST';
+
+    const METHOD_GET = 'GET';
+
+    const METHOD_PUT = 'PUT';
+
+    const METHOD_DELETE = 'DELETE';
+
+    const HTTP_OK = 200;
+
     /**
      * @var array
      */
@@ -126,7 +136,7 @@ class Client implements ClientInterface
         if (count($params) > 0) {
             $path = sprintf('%s?%s', $path, http_build_query($params));
         }
-        if (false === $json = $this->runRequest($path, 'GET')) {
+        if (false === $json = $this->runRequest($path, self::METHOD_GET)) {
             return false;
         }
 
@@ -146,7 +156,7 @@ class Client implements ClientInterface
             $data = $this->encodeData($data);
         }
 
-        return $this->runRequest($path, 'POST', $data);
+        return $this->runRequest($path, self::METHOD_POST, $data);
     }
 
     /**
@@ -158,7 +168,7 @@ class Client implements ClientInterface
             $data = $this->encodeData($data);
         }
 
-        return $this->runRequest($path, 'PUT', $data);
+        return $this->runRequest($path, self::METHOD_PUT, $data);
     }
 
     /**
@@ -167,11 +177,11 @@ class Client implements ClientInterface
     public function delete($path, $data = null)
     {
         if (null === $data) {
-            return $this->runRequest($path, 'DELETE');
+            return $this->runRequest($path, self::METHOD_DELETE);
         }
         $data = $this->encodeData($data);
 
-        return $this->runRequest($path, 'DELETE', $data);
+        return $this->runRequest($path, self::METHOD_DELETE, $data);
     }
 
     /**
@@ -303,7 +313,7 @@ class Client implements ClientInterface
      *
      * @return bool|string
      */
-    protected function runRequest($path, $method = 'GET', $data = '')
+    protected function runRequest($path, $method = self::METHOD_GET, $data = '')
     {
         $this->responseCode = null;
 
@@ -331,23 +341,23 @@ class Client implements ClientInterface
         }
 
         switch ($method) {
-            case 'POST':
-                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+            case self::METHOD_POST:
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, self::METHOD_POST);
                 $requestHeader[] = sprintf('content-length: %d', strlen($data));
                 if (isset($data)) {
                     curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
                 }
                 break;
-            case 'PUT':
-                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+            case self::METHOD_PUT:
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, self::METHOD_PUT);
                 $requestHeader[] = sprintf('content-length: %d', strlen($data));
                 if (isset($data)) {
                     curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
                 }
                 break;
-            case 'DELETE':
+            case self::METHOD_DELETE:
                 curl_setopt($curl, CURLOPT_HEADER, false);
-                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, self::METHOD_DELETE);
                 if (isset($data)) {
                     curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
                 }
@@ -388,7 +398,7 @@ class Client implements ClientInterface
      */
     private function isSuccessCode($code)
     {
-        return 200 <= (int) $code && (int) $code <= 299;
+        return self::HTTP_OK <= (int) $code && (int) $code <= 299;
     }
 
     /**
